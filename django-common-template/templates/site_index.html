@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset='UTF-8'>
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/site.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/cardea.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/font/Myriad-Pro-Webkit/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/login-modal.css"  />
+	{% block extracss %}
+	{% endblock %}
+	<link rel="icon" href="/static/image/Cardea_Home_Ver3.jpg" type="image/jpg"/>
+	<script type="text/javascript" src="/static/js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/static/js/action_record.js"></script>
+	<script src="/static/js/jquery.reveal.js"></script>
+	{% block extrajs %}
+	{% endblock %}
+    </head>
+    <body>
+	<header><!--Start of header-->
+	    <div class="wrapper">
+		<a href="/"><h1>Cardea</h1></a>
+		<ul class="navigation">
+		    <li><a id="login" href="#">Sign In</a></li>
+		    <li><a href="/pub/signup">Register</a></li>
+		    <li><a href="javascript:record_action('click_help');">Help</a></li>
+		</ul>
+		<div class="sites">
+		    <a href="javascript:record_action('click_facebook');" title="facebook"><span class="facebook"></span></a>
+		    <a href="javascript:record_action('click_twitter');" title="twitter"><span class="twitter"></span></a>
+		    <a href="javascript:record_action('click_gplus');" title="google+"><span class="google"></span></a>
+		</div>
+		<div class="clear"></div>
+		<nav>
+		    <ul>
+			<li><a href="/" class="{% block homeclass %}{% endblock %}"><span>Home</span></a></li>
+			<li><a href="javascript:record_action('click_howitworks');" class="{% block howclass %}{% endblock %}"><span>How it works</span></a></li>
+			<li><a href="javascript:record_action('click_getcardea');" class="{% block getclass %}{% endblock %}"><span>Get Cardea</span></a></li>
+			<li><a href="javascript:record_action('click_faq');" class="{% block faqclass %}{% endblock %}"><span>Faq</span></a></li>
+		    </ul>
+		</nav>
+	    </div>
+	</header><!--End of header-->
+	<div id="content"><!--Start of Content-->
+	    <div class="wrapper">
+{% block content %}
+{% endblock %}
+	    </div><!--End of id wrapper-->
+	</div><!--End of id content-->
+	<div class="clear"></div>
+	<footer>
+	    <div id="nav_footer">
+		<ul class="nav_footer">
+		    <li><a href="/">Home</a></li>
+		    <li><a href="javascript:record_action('click_aboutus');">About Us</a></li>
+		    <li><a href="javascript:record_action('click_support');">Support</a></li>
+		    <li><a href="javascript:record_action('click_privacy');">Privacy</a></li>
+		    <li><a href="javascript:record_action('click_terms');">Terms</a></li>
+		    <li><a href="javascript:record_action('click_contact');">Contact Us</a></li>
+		    <li><a href="javascript:record_action('click_press');">Press</a></li>
+		    <li><a href="javascript:record_action('click_blog');">Blog</a></li>
+		</ul>
+		<div class="clear"></div>
+		<div id="footer">
+		    <div id="wrapper-footer">
+			<ul class="secured">
+			    <li><a href="javascript:record_action('click_mcafee');"><img src="/static/image/secure.png" height="50" width="139" alt="McAffee Secure"/></a></li>
+			    <li><a href="javascript:record_action('click_norton');"><img src="/static/image/norton.jpg" height="50" width="91" alt="Norton Secured"/></a></li>
+			    <li><a href="javascript:record_action('click_trustguard');"><img src="/static/image/guard.jpg" height="35" width="189" alt="Trust Guard"/></a></li>
+			</ul>
+			<p class="copyright">&copy;2013 Cardea Technologies, Inc. All rights reserved.</p>
+		    </div><!--End of wrapper-footer-->
+		</div><!--End of id footer-->
+	    </div><!--End of id nav_footer--> 
+	</footer>
+{% include "shared/login.html" %}
+	<script type="text/javascript">
+	function csrfSafeMethod(method) {
+	    // these HTTP methods do not require CSRF protection
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+
+	var csrftoken = $.cookie('csrftoken');
+
+	$.ajaxSetup({
+	    crossDomain: false, // obviates need for sameOrigin test
+	    beforeSend: function(xhr, settings) {
+		if (!csrfSafeMethod(settings.type)) {
+		    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		}
+	    }
+	});
+        
+	$(document).ready(function(){
+            var showLoginDialog = "{{ show_login_dialog }}";
+            if (showLoginDialog.length > 0) {
+                $('#modal').reveal({ // The item which will be opened with reveal
+                        animation: 'fade',                   // fade, fadeAndPop, none
+                        animationspeed: 600,                       // how fast animtions are
+                        closeonbackgroundclick: true,              // if you click background will modal close?
+                        dismissmodalclass: 'close'    // the class of a button or element that will close an open modal
+                });
+            }
+
+
+            $('#login').click(function(e) { // Button which will activate our modal
+                $('#modal').reveal({ // The item which will be opened with reveal
+                        animation: 'fade',                   // fade, fadeAndPop, none
+                        animationspeed: 600,                       // how fast animtions are
+                        closeonbackgroundclick: true,              // if you click background will modal close?
+                        dismissmodalclass: 'close'    // the class of a button or element that will close an open modal
+                });
+                return false;
+            });
+
+	    $("#login-form").submit(function(event) {
+		event.preventDefault();
+
+		$(".login-container #error").empty();
+                
+		var posting = $.post('/pub/login',
+		       {
+                        username: $('#login-username').val(),
+                        password: $('#login-password').val()
+			});
+		
+		posting.done(function(data, textStatus) {
+                    var dest_url = '{{ dest_url }}';
+                    if (dest_url.length <= 0) {
+                        dest_url = "/";
+                    }
+		    document.location.href = dest_url;
+		})
+		.fail(function() {
+		    $(".login-container #error").html("<h2>Invalid username or password.</h2>");
+		    $('#login-username').val("");
+		    $('#login-password').val("");
+		});
+	    });
+	{% block readyjs %}
+	{% endblock %}
+	});
+	</script>
+    </body>
+</html>

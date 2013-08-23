@@ -1,0 +1,9 @@
+					{% if table.data %}
+						{% for row in table.data %}
+							{% include table.row_template %}
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan={{table.columns}}>{{table.empty_text}}</td>
+						</tr>
+					{% endif %}

@@ -1,0 +1,10 @@
+{% if page_num_list|length > 1 %}
+|
+{% for pgmeta in page_num_list %}
+    {% if pgmeta.selected %}
+        &nbsp;<span class="page-num-anchor sel-page">{{pgmeta.text}}</span>&nbsp;|
+    {% else %}
+        &nbsp;<a href="#" class="page-num-anchor" data-page-num="{{pgmeta.page}}">{{pgmeta.text}}</a>&nbsp;|
+    {% endif %}
+{% endfor %}
+{% endif %}

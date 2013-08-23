@@ -1,0 +1,14 @@
+{% extends 'shared/site_index.html' %}
+{% block title %}Home | Cardea{% endblock %}
+{% block extracss %}
+        <link rel="stylesheet" type="text/css" href="/static/css/cardea.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/font/Myriad-Pro-Webkit/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/requires_login.css"/>        
+{% endblock %}
+{% block homeclass %}active{% endblock %}
+{% block howclass %}inactive{% endblock %}
+{% block getclass %}inactive{% endblock %}
+{% block faqclass %}inactive{% endblock %}
+{% block content %}
+<div id="error-page-container">We apologize for the inconvenience, but we were unable to process your request. Please <a href="mailto:support@cardea-app.com">send us an email</a> to get immediate support.</div>
+{% endblock %}

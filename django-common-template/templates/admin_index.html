@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/cardea.css" />
+	<link rel="stylesheet" type="text/css" href="/static/font/Myriad-Pro-Webkit/stylesheet.css" />        
+        <link rel="stylesheet" type="text/css" href="/static/css/error-modal.css"  />
+        {% block extracss %}
+        {% endblock %}
+        <link rel="icon" href="/static/image/Cardea_Home_Ver3.jpg" type="image/jpg" />
+        <script type="text/javascript" src="/static/js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/static/js/json2.js"></script>
+        <script type="text/javascript" src="/static/js/action_record.js"></script>
+	<script src="/static/js/jquery.reveal.js"></script>
+	<script src="/static/js/tablesort.js"></script>	
+	<script src="/static/js/tabcontent.js"></script>
+        {% block extrajs %}
+        {% endblock %}
+    </head>
+    <body>
+        <header><!--Start of header-->
+            <div class="wrapper">
+                <a href="/"><h1>Cardea</h1></a>
+                <ul class="navigation">
+                    <li><a href="#" id="user-welcome-link">Welcome, Admin <span>{{user.first_name}} {{user.last_name}}</span></a></li>
+                    <li><a href="/pub/logout">Logout</a></li>
+                </ul>
+                <div class="clear"></div>
+                <nav>
+                    <ul>
+                        <li><a href="/" class="{% block homeclass %}{% endblock %}"><span>Console</span></a></li>
+                        <li><a href="/admin/failed-parses" class="{% block parseclass %}{% endblock %}"><span>Failed Email Parses</span></a></li>
+                        <li><a href="/admin/users" class="{% block userclass %}{% endblock %}"><span>Users</span></a></li>
+                        <li><a href="#" class="{% block prodclass %}{% endblock %}"><span>Products</span></a></li>
+                        <li><a href="/admin/linked-accounts" class="{% block accountclass %}{% endblock %}"><span>Linked Accounts</span></a></li>
+			<li><a href="#" class="{% block matchclass %}{% endblock %}"><span>Matches</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div id="content">
+            <div class="wrapper">
+        {% block content %}
+        {% endblock %}
+            </div><!--End of class wrapper-->
+        </div><!--End of id content-->
+        <footer>
+            <div id="nav_footer">
+                <div id="footer">
+                    <div id="wrapper-footer">
+                        <p class="copyright">&copy;2013 Cardea Technologies, Inc. All rights reserved.</p>
+                    </div><!--End of wrapper-footer-->
+                </div><!--End of id footer-->
+            </div><!--End of id nav_footer--> 
+        </footer>
+{% include "shared/error_dialog.html" %}
+        <script type="text/javascript">
+        var last_item_count = 0;
+        var last_time = new Date().getTime();
+
+	function csrfSafeMethod(method) {
+	    // these HTTP methods do not require CSRF protection
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+
+	var csrftoken = $.cookie('csrftoken');
+
+	$.ajaxSetup({
+	    crossDomain: false, // obviates need for sameOrigin test
+	    beforeSend: function(xhr, settings) {
+		if (!csrfSafeMethod(settings.type)) {
+		    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		}
+	    }
+	});
+                    
+        $(document).ready(function(){
+                        
+        {% block readyjs %}
+        {% endblock %}
+        });
+        </script>
+    </body>
+</html>

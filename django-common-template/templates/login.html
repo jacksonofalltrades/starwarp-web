@@ -1,0 +1,19 @@
+<div id="modal">
+        <div class="heading">
+                <img class="logo" src="/static/image/account-settings.png" height="28" width="28" alt="image"/>
+                <p>Login</p>
+                <a href="#" class="close"><img class="img_close" src="/static/image/account-close.png" height="16" width="16" alt-"image"/></a>
+        </div>
+        <div class="login-container">
+            <div id="error">
+            </div>
+            <form id="login-form" method="post" action="/pub/login" autocomplete="off">
+                    {% csrf_token %}
+                    <label>Username (or Email) *</label>
+                    <input type="text" id="login-username" name="username" required value="{{form_username}}" />
+                    <label>Password *</label>
+                    <input type="password" id="login-password" name="password" required />
+                    <button class="login-button">Login</button>
+            </form>
+        </div>
+</div>
